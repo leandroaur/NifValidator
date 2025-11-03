@@ -61,7 +61,7 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
+        stage('Beta Testing') {
             steps {
                 withCredentials([usernamePassword(
                    credentialsId: 'docker-id',
