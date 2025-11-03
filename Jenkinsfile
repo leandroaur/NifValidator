@@ -82,7 +82,7 @@ pipeline {
                 }
             }
             steps {
-                sh 'python3 -m randon cc . -a -s --exclude site-packages'
+                sh 'python3 -m radon cc . -a -s --exclude site-packages'
             }
 
         }
