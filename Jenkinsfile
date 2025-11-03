@@ -16,9 +16,33 @@ pipeline {
             }
             steps {
                 sh"""
+                export PIP_DISABLE_PIP_VERSION_CHECK=1
+                export PATH="$HOME/.local/bin:${PATH}"
                 pip install -r requirements.txt
+                pip install -r requirements-test.txt
                 """
             }
+        }
+
+        stage('Unit') {
+            agent {
+                docker {
+                image 'python:3.11-slim'
+                reuseNode true
+                }
+            }
+            steps {
+                sh 'python3 -m pytest --junitxml result.xml tests/'
+            }
+            post {
+                always {
+                // Archive the test results as artifacts
+                archiveArtifacts artifacts: 'result.xml', allowEmptyArchive: true
+                // Publish JUnit test results
+                junit 'result.xml'
+                }
+            }
+            
         }
 
         stage('Deliver') {
