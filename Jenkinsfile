@@ -36,5 +36,15 @@ pipeline {
                 }
             }
         }
+
+        stage('Deploy') {
+            steps {
+                sshagent(credentials: ['cluster-crendentials']) {
+                    sh"""
+                    ssh -o StrictHostKeyChecking=no redhat@172.31.38.10 docker --version
+                    """
+                }
+            }
+        }
     }
 }
